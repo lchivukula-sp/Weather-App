@@ -1,0 +1,218 @@
+body {
+  padding-top: 50px;
+  font-family: "Roboto", sans-serif;
+}
+
+.container {
+  width: 50%;
+  top: 40px;
+  border: 3px solid grey;
+  border-color: linear-gradient(
+    99.6deg,
+    rgb(112, 128, 152) 10.6%,
+    rgb(242, 227, 234) 32.9%,
+    rgb(234, 202, 213) 52.7%,
+    rgb(220, 227, 239) 72.8%,
+    rgb(185, 205, 227) 81.1%,
+    rgb(154, 180, 212) 102.4%
+  );
+  border-radius: 20px;
+  box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.3);
+  padding: 40px 20px 20px 20px;
+  text-align: center;
+  background-image: url("images/sunnySky8.jpg");
+  background-size: cover;
+}
+
+#location {
+  text-align: left;
+  padding-top: 20px;
+  position: relative;
+}
+
+h1 {
+  font-size: 36px;
+  position: relative;
+  right: -20px;
+  padding-top: 20px;
+}
+
+h3 {
+  font-size: 20px;
+  left: -10px;
+}
+
+#search {
+  text-align: center;
+  float: left;
+  padding-top: 20px;
+}
+
+.searchCity {
+  width: 88%;
+  box-sizing: border-box;
+  border: 4px solid black;
+  border-radius: 18px;
+  font-size: 16px;
+  background-color: whitesmoke;
+  padding: 10px 10px 10px 40px;
+  margin: 8px 0;
+  text-align: left;
+  font-weight: 500;
+  position: relative;
+  right: 28px;
+}
+
+#srchIcon {
+  position: relative;
+  top: 0;
+  right: 215px;
+  background-color: white;
+}
+
+#currLocation {
+  position: relative;
+  top: -56px;
+  right: -88px;
+  background-color: lightskyblue;
+  border-radius: 10px;
+  padding: 10px 10px;
+  border: 2px solid lightskyblue;
+  cursor: pointer;
+  transition: all 500ms ease-in-out;
+}
+
+.metric {
+  position: relative;
+  top: -50px;
+  right: -88px;
+}
+
+button {
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 500ms ease-in-out;
+}
+
+row py-0.col-sm-4 {
+  height: 10px;
+}
+
+div.currDetails #currCondition,
+#currTemp .feelsLike,
+#details {
+  text-align: center;
+  font-weight: 500;
+}
+
+.feelsLike {
+  font-size: small;
+}
+
+#currCondition,
+#currTemp {
+  margin-bottom: 5px;
+  text-transform: capitalize;
+}
+
+#details {
+  position: relative;
+  top: -20px;
+}
+
+.wicon {
+  font-size: 120px;
+  text-align: center;
+  object-position: top center;
+  position: relative;
+  top: -40px;
+  padding-right: 5px;
+}
+
+col-sm-4.row {
+  display: flex;
+  padding-right: 12px;
+  padding-left: -22px;
+  position: relative;
+}
+
+.currDetails #detailsTable {
+  float: left;
+  position: relative;
+  left: -30px;
+}
+
+.setting {
+  font-size: small;
+  padding-bottom: 12px;
+}
+
+div.currDetails #currCondition,
+#currTemp {
+  font-size: 28px;
+}
+
+.warnings {
+  position: relative;
+  text-align: center;
+  color: red;
+  font-style: italic;
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 16px;
+  top: -30px;
+}
+
+.table {
+  display: flex;
+  position: relative;
+  padding-right: 32px;
+  margin-top: 16px;
+}
+
+ul {
+  list-style: none;
+  text-align: center;
+  position: relative;
+}
+
+li {
+  width: 70px;
+  height: 185px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border: 3px solid black;
+  border-radius: 50px;
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
+  margin: 20px;
+  float: left;
+  font-size: 16px;
+}
+
+div.next5Days i {
+  padding-bottom: 3px;
+}
+
+pre {
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+
+pre.low {
+  margin-top: 0;
+}
+
+li,
+pre,
+pre.low {
+  font-weight: 600;
+}
+
+.footer {
+  font-size: 11px;
+  text-align: center;
+  font-style: italic;
+  line-height: 2;
+}
