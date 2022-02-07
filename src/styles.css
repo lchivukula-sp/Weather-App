@@ -211,8 +211,9 @@ pre.low {
 }
 
 .footer {
-  font-size: 11px;
+  font-size: 12px;
   text-align: center;
   font-style: italic;
   line-height: 2;
+  padding-top: 3px;
 }
