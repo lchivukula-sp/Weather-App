@@ -1,32 +1,32 @@
 //Getting Current Date and Time
 let currentDate = new Date();
 
-let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+function getDay() {
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  let currentDay = days[currentDate.getDay()];
+  return currentDay;
+}
 
-let currentDay = days[currentDate.getDay()];
+function getMonth() {
+  let months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  let currentMonth = months[currentDate.getMonth()];
+  return currentMonth;
+}
 
-let currentDt = currentDate.getDate();
-
-let months = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-let currentMonth = months[currentDate.getMonth()];
-
-let currentYear = currentDate.getFullYear();
-
-let currentHour = currentDate.getHours();
-
+//funtion to add zeros to minutes
 function addZero(min) {
   if (min < 10) {
     min = "0" + min;
@@ -36,12 +36,20 @@ function addZero(min) {
   }
 }
 
-let currentMinute = addZero(currentDate.getMinutes());
-
-let h3 = document.querySelector("h3");
-h3.innerHTML = ` ${currentDay} ${currentMonth} ${currentDt} ${currentYear} ${currentHour}:${currentMinute}`;
-
 //Getting Real Data
+
+//Funtion to format the Unix time stamp
+function formatDate(timestamp) {
+  let dt = new Date(timestamp);
+  let hrs = dt.getHours();
+  let mins = addZero(dt.getMinutes());
+  let updatedDay = getDay(dt.getDay());
+  let month = getMonth(dt.getMonth());
+  let year = dt.getFullYear();
+  let currentDt = currentDate.getDate();
+
+  return `${updatedDay} ${month} ${currentDt} ${year} ${hrs}:${mins}`;
+}
 
 function getWeather(response) {
   //Setting the City Name on the App
@@ -81,6 +89,11 @@ function getWeather(response) {
   document.getElementById(
     "visibility"
   ).innerHTML = `${visibilityInMiles} miles`;
+
+  //Setting the updated by Time
+  document.getElementById("updatedTime").innerHTML = formatDate(
+    response.data.dt * 1000
+  );
 }
 
 let apiKey = "cf8267c6600edc57b47b1e642c93512f";

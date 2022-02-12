@@ -20,7 +20,7 @@ body {
   box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.3);
   padding: 40px 20px 20px 20px;
   text-align: center;
-  background-image: url("../images/sunnySky8.JPG");
+  background-image: url("images/sunnySky8.jpg");
   background-size: cover;
 }
 
@@ -37,15 +37,13 @@ h1 {
   padding-top: 20px;
 }
 
-h3 {
-  font-size: 16px;
-  left: -10px;
-}
-
 h4 {
   font-size: 16px;
   position: relative;
-  left: 17px;
+}
+
+#currCondition:first-letter,
+h4:first-letter {
   text-transform: capitalize;
 }
 
@@ -119,7 +117,6 @@ div.currDetails #currCondition,
 #currCondition,
 #currTemp {
   margin-bottom: 5px;
-  text-transform: capitalize;
 }
 
 #details {
@@ -218,9 +215,8 @@ pre.low {
 }
 
 .footer {
-  font-size: 12px;
+  font-size: 11px;
   text-align: center;
   font-style: italic;
   line-height: 2;
-  padding-top: 3px;
 }
