@@ -39,7 +39,7 @@ function addZero(min) {
 let currentMinute = addZero(currentDate.getMinutes());
 
 let h3 = document.querySelector("h3");
-h3.innerHTML = ` ${currentDay} ${currentMonth} ${currentDt} ${currentYear} ${currentHour}:${currentMinute} PM`;
+h3.innerHTML = ` ${currentDay} ${currentMonth} ${currentDt} ${currentYear} ${currentHour}:${currentMinute}`;
 
 //Getting Real Data
 
