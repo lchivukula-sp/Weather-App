@@ -44,7 +44,9 @@ h3 {
 
 h4 {
   font-size: 16px;
-  left: -12px;
+  position: relative;
+  left: 17px;
+  text-transform: capitalize;
 }
 
 #search {
