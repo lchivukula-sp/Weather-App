@@ -125,11 +125,9 @@ div.currDetails #currCondition,
 }
 
 .wicon {
-  font-size: 120px;
   text-align: center;
   object-position: top center;
   position: relative;
-  top: -40px;
   padding-right: 5px;
 }
 

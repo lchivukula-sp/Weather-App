@@ -94,6 +94,16 @@ function getWeather(response) {
   document.getElementById("updatedTime").innerHTML = formatDate(
     response.data.dt * 1000
   );
+
+  //Setting the Weather icon
+  let icon = document.querySelector("#icon");
+  icon.setAttribute(
+    "src",
+    `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
+  );
+
+  //Setting the alt text
+  icon.setAttribute("alt", response.data.weather[0].description);
 }
 
 let apiKey = "cf8267c6600edc57b47b1e642c93512f";
