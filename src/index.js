@@ -58,13 +58,13 @@ function getWeather(response) {
   document.querySelector("h1").innerHTML = response.data.name;
 
   //Setting the Current Temp
-  document.getElementById("currTemp").innerHTML = `${Math.round(
-    response.data.main.temp
-  )} °F`;
+  tempInF = response.data.main.temp;
+  document.getElementById("currTemp").innerHTML = `${Math.round(tempInF)} °F`;
 
   //Setting the Feels Like Temp
+  feelsLikeTempInF = response.data.main.feels_like;
   document.getElementById("feels-like").innerHTML = `Feels like ${Math.round(
-    response.data.main.feels_like
+    feelsLikeTempInF
   )} °F`;
 
   //Setting the High Temp
@@ -172,6 +172,7 @@ function convertTemp() {
     metricBtn.innerHTML = "°C";
     metricBtn.style.backgroundColor = "#FFFF";
     metricBtn.style.color = "black";
+    console.log(`${Math.round(tempInF)} °F`);
     document.getElementById("currTemp").innerHTML = `${Math.round(tempInF)} °F`;
 
     document.getElementById("feels-like").innerHTML = `Feels like ${Math.round(
