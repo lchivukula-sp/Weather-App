@@ -48,7 +48,9 @@ function formatDate(timestamp) {
   let year = dt.getFullYear();
   let currentDt = currentDate.getDate();
 
-  return `${updatedDay} ${month} ${currentDt} ${year} ${hrs}:${mins}`;
+  let lastUpdatedTime = `${updatedDay} ${month} ${currentDt} ${year} ${hrs}:${mins}`;
+  let sunRiseSetTime = `${hrs}:${mins}`;
+  return [lastUpdatedTime, sunRiseSetTime];
 }
 
 function getWeather(response) {
@@ -66,14 +68,12 @@ function getWeather(response) {
   )} °F`;
 
   //Setting the High Temp
-  document.getElementById("high").innerHTML = Math.round(
-    response.data.main.temp_max
-  );
+  highTempInF = response.data.main.temp_max;
+  document.getElementById("high").innerHTML = Math.round(highTempInF);
 
   //Setting the Low Temp
-  document.getElementById("low").innerHTML = Math.round(
-    response.data.main.temp_min
-  );
+  lowTempInF = response.data.main.temp_min;
+  document.getElementById("low").innerHTML = Math.round(lowTempInF);
 
   //Setting the Current Condition
   document.getElementById("currCondition").innerHTML =
@@ -91,9 +91,16 @@ function getWeather(response) {
   ).innerHTML = `${visibilityInMiles} miles`;
 
   //Setting the updated by Time
-  document.getElementById("updatedTime").innerHTML = formatDate(
-    response.data.dt * 1000
-  );
+  let formatUpdatedDate = formatDate(response.data.dt * 1000);
+  document.getElementById("updatedTime").innerHTML = formatUpdatedDate[0];
+
+  //Setting the Sunrise Time
+  let formatSunriseDate = formatDate(response.data.sys.sunrise * 1000);
+  document.getElementById("sunrise").innerHTML = formatSunriseDate[1];
+
+  //Setting the Sunset Time
+  let formatSunsetDate = formatDate(response.data.sys.sunset * 1000);
+  document.getElementById("sunset").innerHTML = formatSunsetDate[1];
 
   //Setting the Weather icon
   let icon = document.querySelector("#icon");
@@ -133,5 +140,53 @@ function getCurrentPosition() {
 
 let currLocBtn = document.querySelector("#currLocation");
 currLocBtn.addEventListener("click", getCurrentPosition);
+
+//Function to convert temperature to Celsius
+function convertTemp() {
+  let metricBtn = document.getElementById("chngeMetric");
+  if (metricBtn.innerHTML.trim() === "°C") {
+    metricBtn.innerHTML = "°F";
+    metricBtn.style.backgroundColor = "#3e8e41";
+    metricBtn.style.color = "#FFFF";
+    let currTempInCel = ((tempInF - 32) * 5) / 9;
+    let feelsLikeTempInCel = ((feelsLikeTempInF - 32) * 5) / 9;
+    let highTempInCel = ((highTempInF - 32) * 5) / 9;
+    let lowTempInCel = ((lowTempInF - 32) * 5) / 9;
+
+    //Setting the current temp in Celsius
+    document.getElementById("currTemp").innerHTML = `${Math.round(
+      currTempInCel
+    )} °C`;
+
+    //Setting the feels like temp in Celsius
+    document.getElementById("feels-like").innerHTML = `Feels like ${Math.round(
+      feelsLikeTempInCel
+    )} °C`;
+
+    //Setting the high temp in Celsius
+    document.getElementById("high").innerHTML = `${Math.round(highTempInCel)}`;
+
+    //Setting the low temp in Celsius
+    document.getElementById("low").innerHTML = `${Math.round(lowTempInCel)}`;
+  } else {
+    metricBtn.innerHTML = "°C";
+    metricBtn.style.backgroundColor = "#FFFF";
+    metricBtn.style.color = "black";
+    document.getElementById("currTemp").innerHTML = `${Math.round(tempInF)} °F`;
+
+    document.getElementById("feels-like").innerHTML = `Feels like ${Math.round(
+      feelsLikeTempInF
+    )} °F`;
+
+    document.getElementById("high").innerHTML = `${Math.round(highTempInF)}`;
+
+    document.getElementById("low").innerHTML = `${Math.round(lowTempInF)}`;
+  }
+}
+
+let tempInF = null;
+let feelsLikeTempInF = null;
+let highTempInF = null;
+let lowTempInF = null;
 
 searchForCity("New York");
