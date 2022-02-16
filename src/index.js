@@ -148,6 +148,8 @@ function convertTemp() {
     metricBtn.innerHTML = "°F";
     metricBtn.style.backgroundColor = "#3e8e41";
     metricBtn.style.color = "#FFFF";
+
+    //Converting temperature from Farenheit to Celsius
     let currTempInCel = ((tempInF - 32) * 5) / 9;
     let feelsLikeTempInCel = ((feelsLikeTempInF - 32) * 5) / 9;
     let highTempInCel = ((highTempInF - 32) * 5) / 9;
