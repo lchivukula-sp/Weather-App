@@ -2,6 +2,7 @@
 let currentDate = new Date();
 
 function getDay(timestamp) {
+  let currentDate = new Date(timestamp * 1000);
   let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   let currentDay = days[currentDate.getDay()];
   return currentDay;
@@ -42,19 +43,21 @@ function displayForecast(response) {
 
   forecastHTML = `<ul class="table" id="forecast-table">`;
 
-  forecast.forEach(function (forecastDay) {
-    forecastHTML =
-      forecastHTML +
-      `   <li class="col">
+  forecast.forEach(function (forecastDay, index) {
+    if (index < 5) {
+      forecastHTML =
+        forecastHTML +
+        `   <li class="col">
             ${formatForecastTimeStamp(forecastDay.dt)} <br/>
             <br />
             <img src="http://openweathermap.org/img/wn/${
               forecastDay.weather[0].icon
-            }@2x.png" alt="" width="42 />
+            }@2x.png" alt="${forecastDay.weather[0].description}" width="50" />
              <br/>
              <pre class="high">Hi ${Math.round(forecastDay.temp.max)}°</pre>
              <pre class="low">Lo ${Math.round(forecastDay.temp.min)}°</pre>
           </li>`;
+    }
   });
 
   forecastHTML = forecastHTML + `</ul>`;
@@ -71,7 +74,7 @@ function formatDate(timestamp) {
   let updatedDay = getDay(dt.getDay());
   let month = getMonth(dt.getMonth());
   let year = dt.getFullYear();
-  let currentDt = currentDate.getDate();
+  let currentDt = dt.getDate();
 
   let lastUpdatedTime = `${updatedDay} ${month} ${currentDt} ${year} ${hrs}:${mins}`;
   let sunRiseSetTime = `${hrs}:${mins}`;
