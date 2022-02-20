@@ -1,7 +1,7 @@
 //Getting Current Date and Time
 let currentDate = new Date();
 
-function getDay() {
+function getDay(timestamp) {
   let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   let currentDay = days[currentDate.getDay()];
   return currentDay;
@@ -36,6 +36,31 @@ function addZero(min) {
   }
 }
 
+function displayForecast(response) {
+  let forecast = response.data.daily;
+  let forecastElement = document.querySelector("#weather-forecast");
+
+  forecastHTML = `<ul class="table" id="forecast-table">`;
+
+  forecast.forEach(function (forecastDay) {
+    forecastHTML =
+      forecastHTML +
+      `   <li class="col">
+            ${formatForecastTimeStamp(forecastDay.dt)} <br/>
+            <br />
+            <img src="http://openweathermap.org/img/wn/${
+              forecastDay.weather[0].icon
+            }@2x.png" alt="" width="42 />
+             <br/>
+             <pre class="high">Hi ${Math.round(forecastDay.temp.max)}°</pre>
+             <pre class="low">Lo ${Math.round(forecastDay.temp.min)}°</pre>
+          </li>`;
+  });
+
+  forecastHTML = forecastHTML + `</ul>`;
+  forecastElement.innerHTML = forecastHTML;
+}
+
 //Getting Real Data
 
 //Funtion to format the Unix time stamp
@@ -51,6 +76,22 @@ function formatDate(timestamp) {
   let lastUpdatedTime = `${updatedDay} ${month} ${currentDt} ${year} ${hrs}:${mins}`;
   let sunRiseSetTime = `${hrs}:${mins}`;
   return [lastUpdatedTime, sunRiseSetTime];
+}
+
+function formatForecastTimeStamp(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = getDay(date.getDay(timestamp));
+  let forecastDate = date.getDate();
+
+  let formatDate = `${day} ${forecastDate}`;
+  return formatDate;
+}
+
+function getCoordinates(coordinates) {
+  console.log(coordinates);
+  let apiURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=Imperial`;
+  console.log(apiURL);
+  axios.get(`${apiURL}`).then(displayForecast);
 }
 
 function getWeather(response) {
@@ -111,6 +152,8 @@ function getWeather(response) {
 
   //Setting the alt text
   icon.setAttribute("alt", response.data.weather[0].description);
+
+  getCoordinates(response.data.coord);
 }
 
 let apiKey = "cf8267c6600edc57b47b1e642c93512f";
