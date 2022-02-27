@@ -1,14 +1,10 @@
-//Getting Current Date and Time
-let currentDate = new Date();
-
-function getDay(timestamp) {
-  let currentDate = new Date(timestamp * 1000);
+function getDay(day) {
   let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  let currentDay = days[currentDate.getDay()];
+  let currentDay = days[day];
   return currentDay;
 }
 
-function getMonth() {
+function getMonth(month) {
   let months = [
     "Jan",
     "Feb",
@@ -23,7 +19,7 @@ function getMonth() {
     "Nov",
     "Dec",
   ];
-  let currentMonth = months[currentDate.getMonth()];
+  let currentMonth = months[month];
   return currentMonth;
 }
 
@@ -37,6 +33,7 @@ function addZero(min) {
   }
 }
 
+//function to display forecase of next 5 days
 function displayForecast(response) {
   let forecast = response.data.daily;
   let forecastElement = document.querySelector("#weather-forecast");
@@ -44,7 +41,7 @@ function displayForecast(response) {
   forecastHTML = `<ul class="table" id="forecast-table">`;
 
   forecast.forEach(function (forecastDay, index) {
-    if (index < 5) {
+    if (index > 0 && index < 6) {
       forecastHTML =
         forecastHTML +
         `   <li class="col">
@@ -54,8 +51,12 @@ function displayForecast(response) {
               forecastDay.weather[0].icon
             }@2x.png" alt="${forecastDay.weather[0].description}" width="50" />
              <br/>
-             <pre class="high">Hi ${Math.round(forecastDay.temp.max)}°</pre>
-             <pre class="low">Lo ${Math.round(forecastDay.temp.min)}°</pre>
+             <pre class="high">Hi<span class="maxTemp">${Math.round(
+               forecastDay.temp.max
+             )}</span>°</pre>
+             <pre class="low">Lo<span class="minTemp">${Math.round(
+               forecastDay.temp.min
+             )}</span>°</pre>
           </li>`;
     }
   });
@@ -63,8 +64,6 @@ function displayForecast(response) {
   forecastHTML = forecastHTML + `</ul>`;
   forecastElement.innerHTML = forecastHTML;
 }
-
-//Getting Real Data
 
 //Funtion to format the Unix time stamp
 function formatDate(timestamp) {
@@ -74,7 +73,7 @@ function formatDate(timestamp) {
   let updatedDay = getDay(dt.getDay());
   let month = getMonth(dt.getMonth());
   let year = dt.getFullYear();
-  let currentDt = dt.getDate();
+  let currentDt = currentDate.getDate();
 
   let lastUpdatedTime = `${updatedDay} ${month} ${currentDt} ${year} ${hrs}:${mins}`;
   let sunRiseSetTime = `${hrs}:${mins}`;
@@ -91,9 +90,7 @@ function formatForecastTimeStamp(timestamp) {
 }
 
 function getCoordinates(coordinates) {
-  console.log(coordinates);
   let apiURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=Imperial`;
-  console.log(apiURL);
   axios.get(`${apiURL}`).then(displayForecast);
 }
 
@@ -120,8 +117,12 @@ function getWeather(response) {
   document.getElementById("low").innerHTML = Math.round(lowTempInF);
 
   //Setting the Current Condition
-  document.getElementById("currCondition").innerHTML =
-    response.data.weather[0].description;
+  let currentCondition = document.getElementById("currCondition");
+  //console.log(currentCondition);
+  currentCondition.innerHTML = response.data.weather[0].description;
+  console.log(response.data.weather[0].description);
+
+  displayWarning(currentCondition);
 
   //Setting the Wind
   document.getElementById("wind").innerHTML = `${Math.round(
@@ -156,10 +157,9 @@ function getWeather(response) {
   //Setting the alt text
   icon.setAttribute("alt", response.data.weather[0].description);
 
+  //get latitude and longitude to displayed forecase of next 5 days
   getCoordinates(response.data.coord);
 }
-
-let apiKey = "cf8267c6600edc57b47b1e642c93512f";
 
 function searchForCity(city) {
   let apiURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=Imperial&appid=${apiKey}`;
@@ -172,9 +172,6 @@ function getCityName(event) {
   searchForCity(city);
 }
 
-let form = document.querySelector("form");
-form.addEventListener("submit", getCityName);
-
 function showCurrentLocation(position) {
   let apiURLCurrLoc = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=imperial&appid=${apiKey}`;
   axios.get(`${apiURLCurrLoc}`).then(getWeather);
@@ -184,12 +181,51 @@ function getCurrentPosition() {
   navigator.geolocation.getCurrentPosition(showCurrentLocation);
 }
 
-let currLocBtn = document.querySelector("#currLocation");
-currLocBtn.addEventListener("click", getCurrentPosition);
+//function to display warnings
+function displayWarning(description) {
+  description = description.innerHTML.toLowerCase().trim();
+
+  if (
+    description === "rain" ||
+    description === "shower rain" ||
+    description === "thunderstorm"
+  ) {
+    document.querySelector(
+      ".warnings"
+    ).innerHTML = `☂ Don´t forget your umbrella and rain coat ☂!`;
+  } else {
+    if (
+      description === "clear sky" ||
+      description === "few clouds" ||
+      description === "broken clouds"
+    ) {
+      document.querySelector(".warnings").innerHTML = `👒 Enjoy the sun 🍨`;
+    } else {
+      if (description === "snow") {
+        document.querySelector(
+          ".warnings"
+        ).innerHTML = `Bundle up nicely and drink something hot! ☕`;
+      } else {
+        if (description === "haze" || description === "mist") {
+          document.querySelector(
+            ".warnings"
+          ).innerHTML = `With mist, drive carefully 🚘`;
+        } else {
+          document.querySelector(
+            ".warnings"
+          ).innerHTML = `Dress as per the temperature!`;
+        }
+      }
+    }
+  }
+}
 
 //Function to convert temperature to Celsius
 function convertTemp() {
   let metricBtn = document.getElementById("chngeMetric");
+  let forecastMax = document.querySelectorAll(".maxTemp");
+  let forecastMin = document.querySelectorAll(".minTemp");
+
   if (metricBtn.innerHTML.trim() === "°C") {
     metricBtn.innerHTML = "°F";
     metricBtn.style.backgroundColor = "#3e8e41";
@@ -216,11 +252,23 @@ function convertTemp() {
 
     //Setting the low temp in Celsius
     document.getElementById("low").innerHTML = `${Math.round(lowTempInCel)}`;
+
+    //Setting the forecast high temp in Celsius
+    forecastMax.forEach(function (forecast) {
+      let currentTemp = forecast.innerHTML;
+      console.log(currentTemp);
+      forecast.innerHTML = Math.round(((currentTemp - 32) * 5) / 9);
+    });
+
+    //Setting the forecast low temp in Celsius
+    forecastMin.forEach(function (forecast) {
+      let currentTemp = forecast.innerHTML;
+      forecast.innerHTML = Math.round(((currentTemp - 32) * 5) / 9);
+    });
   } else {
     metricBtn.innerHTML = "°C";
     metricBtn.style.backgroundColor = "#FFFF";
     metricBtn.style.color = "black";
-    console.log(`${Math.round(tempInF)} °F`);
     document.getElementById("currTemp").innerHTML = `${Math.round(tempInF)} °F`;
 
     document.getElementById("feels-like").innerHTML = `Feels like ${Math.round(
@@ -230,6 +278,18 @@ function convertTemp() {
     document.getElementById("high").innerHTML = `${Math.round(highTempInF)}`;
 
     document.getElementById("low").innerHTML = `${Math.round(lowTempInF)}`;
+
+    //Setting the forecast high temp in Farenheit
+    forecastMax.forEach(function (forecast) {
+      let currentTemp = forecast.innerHTML;
+      forecast.innerHTML = Math.round((currentTemp * 9) / 5 + 32);
+    });
+
+    //Setting the forecast high temp in Farenheit
+    forecastMin.forEach(function (forecast) {
+      let currentTemp = forecast.innerHTML;
+      forecast.innerHTML = Math.round((currentTemp * 9) / 5 + 32);
+    });
   }
 }
 
@@ -237,5 +297,16 @@ let tempInF = null;
 let feelsLikeTempInF = null;
 let highTempInF = null;
 let lowTempInF = null;
+
+//Getting Current Date and Time
+let currentDate = new Date();
+
+let apiKey = "cf8267c6600edc57b47b1e642c93512f";
+
+let currLocBtn = document.querySelector("#currLocation");
+currLocBtn.addEventListener("click", getCurrentPosition);
+
+let form = document.querySelector("form");
+form.addEventListener("submit", getCityName);
 
 searchForCity("New York");

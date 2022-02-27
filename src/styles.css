@@ -162,7 +162,7 @@ div.currDetails #currCondition,
   font-size: 20px;
   font-weight: 600;
   margin-top: 16px;
-  top: -30px;
+  top: -22px;
 }
 
 .table {
@@ -200,15 +200,22 @@ div.next5Days i {
 pre.high {
   margin-bottom: 0;
   margin-top: 10px;
+  overflow: hidden;
+}
+
+span.maxTemp,
+span.minTemp {
+  padding: 0.25rem 0 0.25rem 0.85rem;
 }
 
 pre.low {
   margin-top: 0;
+  overflow: hidden;
 }
 
 li,
-pre.high,
-pre.low {
+pre.low,
+pre.high {
   font-weight: 600;
 }
 
